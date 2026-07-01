@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Contenedor de Esperanza · Ayuda para Venezuela</title>
+<meta name="description" content="Llenamos y enviamos un contenedor de ayuda a Venezuela tras los terremotos, a través de la Fundación Esperanza y Alegría. Dona dinero (con desgravación) o producto. Cada tramo recaudado llega en material real." />
+
+<!-- Open Graph / compartir por WhatsApp y redes -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Contenedor de Esperanza · Ayuda para Venezuela" />
+<meta property="og:description" content="Llenamos un contenedor de ayuda para Venezuela. Cada aportación llega en producto real. Súmate." />
+<meta property="og:locale" content="es_ES" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+/* ============================================================
+   CONTENEDOR DE ESPERANZA — landing de campaña
+   Colaboración Fundación Esperanza y Alegría + Nicolás San José
+   Stack: HTML/CSS/JS puro. Sin dependencias. Móvil primero.
+   ============================================================ */
+
+:root{
+  --cream:      #FBF7F0;
+  --cream-2:    #F4ECDF;
+  --card:       #FFFFFF;
+  --ink:        #221C15;
+  --ink-soft:   #443B30;
+  --muted:      #756A5B;
+  --line:       rgba(34,28,21,.10);
+  --line-strong:rgba(34,28,21,.16);
+  --accent:     #C0562C;   /* terracota — amanecer, esperanza */
+  --accent-deep:#9C4520;
+  --accent-soft:rgba(192,86,44,.10);
+  --pine:       #1E3A32;   /* verde profundo — confianza / garante */
+  --pine-soft:  #2A4B41;
+  --gold:       #B08428;   /* solo para el sello de acreditación */
+
+  --ease-out:   cubic-bezier(.23,1,.32,1);
+  --ease-io:    cubic-bezier(.77,0,.175,1);
+  --shell-r:    2rem;
+
+  --shadow-soft: 0 24px 60px -28px rgba(34,28,21,.28);
+  --shadow-lift: 0 40px 90px -36px rgba(34,28,21,.36);
+}
+
+*{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+body{
+  margin:0;
+  background:var(--cream);
+  color:var(--ink);
+  font-family:"Plus Jakarta Sans", system-ui, sans-serif;
+  font-size:17px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+@media (max-width:600px){ body{ font-size:16px; } }
+
+h1,h2,h3{ font-family:"Fraunces", Georgia, serif; font-weight:500; letter-spacing:-.01em; line-height:1.04; margin:0; }
+p{ margin:0; }
+a{ color:inherit; text-decoration:none; }
+img{ max-width:100%; display:block; }
+::selection{ background:var(--accent); color:#fff; }
+
+.wrap{ width:100%; max-width:1180px; margin:0 auto; padding:0 24px; }
+@media (max-width:600px){ .wrap{ padding:0 20px; } }
+
+section{ position:relative; }
+.section-pad{ padding:clamp(88px,13vw,168px) 0; }
+
+/* film grain — fijo, sin coste de scroll */
+.grain{
+  position:fixed; inset:0; z-index:60; pointer-events:none; opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- eyebrow / pills ---------- */
+.eyebrow{
+  display:inline-flex; align-items:center; gap:8px;
+  font-size:11px; font-weight:600; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--accent-deep);
+  background:var(--accent-soft);
+  border:1px solid rgba(192,86,44,.18);
+  padding:7px 14px; border-radius:999px;
+}
+.eyebrow .dot{ width:6px; height:6px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 0 rgba(192,86,44,.5); animation:pulse 2.4s var(--ease-out) infinite; }
+@keyframes pulse{ 0%{ box-shadow:0 0 0 0 rgba(192,86,44,.45);} 70%{ box-shadow:0 0 0 8px rgba(192,86,44,0);} 100%{ box-shadow:0 0 0 0 rgba(192,86,44,0);} }
+
+.kicker{ font-size:12px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); }
+
+/* ---------- botones ---------- */
+.btn{
+  display:inline-flex; align-items:center; gap:12px;
+  font-family:inherit; font-size:15px; font-weight:600; letter-spacing:-.01em;
+  padding:13px 14px 13px 24px; border-radius:999px; cursor:pointer;
+  border:1px solid transparent;
+  transition:transform .5s var(--ease-out), background .35s var(--ease-out), box-shadow .5s var(--ease-out), color .35s var(--ease-out);
+  will-change:transform;
+}
+.btn:active{ transform:scale(.975); }
+.btn .ic{
+  width:32px; height:32px; border-radius:50%; display:grid; place-items:center; flex:none;
+  transition:transform .5s var(--ease-out), background .35s var(--ease-out);
+}
+.btn .ic svg{ width:16px; height:16px; }
+.btn-primary{ background:var(--accent); color:#fff; box-shadow:0 16px 34px -16px rgba(192,86,44,.7); }
+.btn-primary .ic{ background:rgba(255,255,255,.16); }
+.btn-primary:hover{ background:var(--accent-deep); box-shadow:0 22px 44px -16px rgba(192,86,44,.75); }
+.btn-primary:hover .ic{ transform:translate(2px,-2px); }
+.btn-ghost{ background:transparent; color:var(--ink); border-color:var(--line-strong); padding-left:22px; }
+.btn-ghost .ic{ background:rgba(34,28,21,.06); }
+.btn-ghost:hover{ background:rgba(34,28,21,.04); border-color:var(--ink); }
+.btn-ghost:hover .ic{ transform:translate(2px,-2px); }
+.btn-dark{ background:var(--ink); color:var(--cream); }
+.btn-dark .ic{ background:rgba(255,255,255,.14); }
+.btn-dark:hover{ background:#000; }
+.btn-dark:hover .ic{ transform:translate(2px,-2px); }
+.btn-block{ width:100%; justify-content:space-between; }
+
+/* ============================================================
+   NAV — isla flotante de cristal
+   ============================================================ */
+.nav{
+  position:fixed; top:0; left:0; right:0; z-index:50;
+  display:flex; justify-content:center; padding:18px 20px;
+  transition:padding .5s var(--ease-out);
+}
+.nav-pill{
+  width:100%; max-width:1000px;
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  padding:9px 9px 9px 22px; border-radius:999px;
+  background:rgba(251,247,240,.72);
+  backdrop-filter:blur(18px) saturate(1.4); -webkit-backdrop-filter:blur(18px) saturate(1.4);
+  border:1px solid var(--line);
+  box-shadow:0 10px 30px -18px rgba(34,28,21,.3);
+  transition:box-shadow .5s var(--ease-out), background .5s var(--ease-out);
+}
+.nav.scrolled .nav-pill{ box-shadow:var(--shadow-soft); background:rgba(251,247,240,.86); }
+.brand{ display:flex; align-items:center; gap:11px; font-weight:700; letter-spacing:-.02em; font-size:15px; }
+.brand-mark{ width:30px; height:30px; flex:none; }
+.nav-links{ display:flex; align-items:center; gap:28px; }
+.nav-links a{ font-size:14px; font-weight:500; color:var(--ink-soft); transition:color .3s var(--ease-out); }
+.nav-links a:hover{ color:var(--accent-deep); }
+.nav-cta{ font-size:14px; padding:10px 12px 10px 20px; }
+.nav-cta .ic{ width:28px; height:28px; }
+.nav-cta .ic svg{ width:14px; height:14px; }
+.hamburger{ display:none; width:44px; height:44px; border-radius:50%; border:1px solid var(--line-strong); background:transparent; cursor:pointer; position:relative; }
+.hamburger span{ position:absolute; left:12px; right:12px; height:1.6px; background:var(--ink); border-radius:2px; transition:transform .45s var(--ease-io), opacity .3s var(--ease-out); }
+.hamburger span:nth-child(1){ top:17px; }
+.hamburger span:nth-child(2){ bottom:17px; }
+body.menu-open .hamburger span:nth-child(1){ transform:translateY(4px) rotate(45deg); top:50%; }
+body.menu-open .hamburger span:nth-child(2){ transform:translateY(-4px) rotate(-45deg); bottom:50%; }
+
+/* menú móvil */
+.mobile-menu{
+  position:fixed; inset:0; z-index:45; padding:120px 28px 40px;
+  background:rgba(251,247,240,.9);
+  backdrop-filter:blur(26px); -webkit-backdrop-filter:blur(26px);
+  display:flex; flex-direction:column; gap:6px;
+  opacity:0; pointer-events:none; transform:translateY(-8px);
+  transition:opacity .4s var(--ease-out), transform .5s var(--ease-out);
+}
+body.menu-open .mobile-menu{ opacity:1; pointer-events:auto; transform:none; }
+.mobile-menu a{ font-family:"Fraunces",serif; font-size:34px; padding:12px 0; border-bottom:1px solid var(--line); color:var(--ink); opacity:0; transform:translateY(14px); }
+body.menu-open .mobile-menu a{ animation:mfade .6s var(--ease-out) forwards; }
+body.menu-open .mobile-menu a:nth-child(1){ animation-delay:.06s; }
+body.menu-open .mobile-menu a:nth-child(2){ animation-delay:.11s; }
+body.menu-open .mobile-menu a:nth-child(3){ animation-delay:.16s; }
+body.menu-open .mobile-menu a:nth-child(4){ animation-delay:.21s; }
+body.menu-open .mobile-menu a:nth-child(5){ animation-delay:.26s; }
+body.menu-open .mobile-menu a:nth-child(6){ animation-delay:.31s; }
+@keyframes mfade{ to{ opacity:1; transform:none; } }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{ padding:clamp(120px,17vw,180px) 0 clamp(64px,8vw,96px); position:relative; overflow:hidden; }
+.hero::before{ /* resplandor cálido, amanecer */
+  content:""; position:absolute; top:-20%; right:-10%; width:70vw; height:70vw; max-width:820px; max-height:820px;
+  background:radial-gradient(circle at center, rgba(192,86,44,.16), rgba(192,86,44,0) 62%);
+  pointer-events:none; z-index:0;
+}
+.hero .wrap{ position:relative; z-index:1; }
+.hero-grid{ display:grid; grid-template-columns:1.08fr .92fr; gap:clamp(40px,6vw,84px); align-items:center; }
+@media (max-width:960px){ .hero-grid{ grid-template-columns:1fr; gap:44px; } }
+
+.hero h1{ font-size:clamp(48px,8.4vw,104px); margin:22px 0 0; }
+.hero h1 .em{ font-style:italic; color:var(--accent); }
+.hero-lead{ font-size:clamp(18px,2.2vw,22px); color:var(--ink-soft); max-width:34ch; margin:24px 0 0; }
+.impulsores{ display:flex; align-items:center; gap:14px; margin-top:30px; flex-wrap:wrap; }
+.impulsores .lbl{ font-size:12.5px; color:var(--muted); }
+.impulsores strong{ color:var(--ink); font-weight:600; }
+.hero-cta{ display:flex; gap:14px; margin-top:34px; flex-wrap:wrap; }
+
+/* panel de progreso — arquitectura doble bisel */
+.progress-shell{
+  background:rgba(255,255,255,.55);
+  border:1px solid var(--line);
+  padding:10px; border-radius:var(--shell-r);
+  box-shadow:var(--shadow-lift);
+  backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+}
+.progress-core{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:calc(var(--shell-r) - .5rem);
+  padding:26px 26px 24px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.7);
+}
+.pc-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:20px; }
+.pc-head .kicker{ font-size:11px; }
+.pc-live{ display:inline-flex; align-items:center; gap:7px; font-size:11.5px; font-weight:600; color:var(--pine); }
+.pc-live .dot{ width:7px; height:7px; border-radius:50%; background:#2fae7d; box-shadow:0 0 0 0 rgba(47,174,125,.5); animation:pulse 2.4s var(--ease-out) infinite; }
+
+.pc-figure{ display:flex; align-items:flex-start; gap:20px; }
+.container-viz{ width:104px; flex:none; }
+@media (max-width:600px){ .container-viz{ width:88px; } }
+.pc-numbers{ flex:1; min-width:0; }
+.pc-raised{ font-family:"Fraunces",serif; font-size:clamp(36px,7vw,46px); font-weight:600; line-height:1; letter-spacing:-.02em; }
+.pc-goal{ font-size:14px; color:var(--muted); margin-top:6px; }
+.pc-goal b{ color:var(--ink); font-weight:600; }
+
+.bar{ height:12px; border-radius:999px; background:var(--cream-2); overflow:hidden; margin-top:18px; border:1px solid var(--line); }
+.bar-fill{ height:100%; width:0; border-radius:999px; background:linear-gradient(90deg,var(--accent-deep),var(--accent)); transition:width 1.4s var(--ease-out); }
+.pc-pct{ display:flex; justify-content:space-between; align-items:baseline; margin-top:10px; font-size:12.5px; color:var(--muted); }
+.pc-pct b{ color:var(--accent-deep); font-weight:700; font-size:14px; }
+
+.countdown{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:22px; }
+.cd-cell{ background:var(--cream); border:1px solid var(--line); border-radius:14px; padding:12px 6px; text-align:center; }
+.cd-num{ font-family:"Fraunces",serif; font-size:clamp(22px,4.4vw,28px); font-weight:600; line-height:1; letter-spacing:-.01em; }
+.cd-lbl{ font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-top:6px; }
+.pc-note{ font-size:12.5px; color:var(--muted); margin-top:18px; text-align:center; }
+
+/* ============================================================
+   TIRA DE CONFIANZA
+   ============================================================ */
+.trust-strip{ border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:rgba(244,236,223,.5); }
+.trust-strip .wrap{ display:flex; align-items:center; justify-content:space-between; gap:24px; padding:22px 24px; flex-wrap:wrap; }
+.trust-item{ display:flex; align-items:center; gap:12px; font-size:13.5px; color:var(--ink-soft); }
+.trust-item svg{ width:22px; height:22px; color:var(--accent); flex:none; }
+.trust-item b{ color:var(--ink); font-weight:600; }
+
+/* ============================================================
+   SITUACIÓN — cifras + relato
+   ============================================================ */
+.split{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(40px,6vw,88px); align-items:center; }
+@media (max-width:860px){ .split{ grid-template-columns:1fr; gap:44px; } }
+.section-title{ font-size:clamp(34px,5.2vw,60px); margin-top:20px; max-width:16ch; }
+.lead-p{ font-size:clamp(17px,1.5vw,19px); color:var(--ink-soft); max-width:56ch; margin-top:22px; }
+.lead-p + .lead-p{ margin-top:16px; }
+
+.stat-stack{ display:flex; flex-direction:column; gap:14px; }
+.stat-card{
+  background:var(--card); border:1px solid var(--line); border-radius:1.4rem;
+  padding:24px 26px; box-shadow:var(--shadow-soft);
+  display:flex; align-items:baseline; gap:18px;
+}
+.stat-num{ font-family:"Fraunces",serif; font-size:clamp(34px,5vw,46px); font-weight:600; letter-spacing:-.02em; line-height:1; color:var(--accent); flex:none; }
+.stat-txt{ font-size:14.5px; color:var(--ink-soft); }
+.stat-txt b{ color:var(--ink); font-weight:600; }
+.src-note{ font-size:12px; color:var(--muted); margin-top:6px; }
+
+/* ============================================================
+   PROYECTO — cómo funciona el contenedor
+   ============================================================ */
+.proyecto{ background:var(--pine); color:#EAF0EC; }
+.proyecto .eyebrow{ color:#EAF0EC; background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.14); }
+.proyecto .eyebrow .dot{ background:#7FD1AC; }
+.proyecto .section-title{ color:#fff; }
+.proyecto .lead-p{ color:rgba(234,240,236,.82); }
+.steps{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:56px; }
+@media (max-width:860px){ .steps{ grid-template-columns:1fr; } }
+.step{
+  background:var(--pine-soft); border:1px solid rgba(255,255,255,.09); border-radius:1.6rem;
+  padding:30px 28px; box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
+}
+.step-n{ font-family:"Fraunces",serif; font-size:15px; color:#7FD1AC; letter-spacing:.06em; }
+.step h3{ color:#fff; font-size:23px; margin:14px 0 10px; }
+.step p{ font-size:14.5px; color:rgba(234,240,236,.74); line-height:1.6; }
+.step .figure{ font-family:"Fraunces",serif; font-size:30px; color:#fff; margin-top:16px; }
+.step .figure small{ font-family:"Plus Jakarta Sans",sans-serif; font-size:13px; font-weight:500; color:rgba(234,240,236,.6); display:block; margin-top:2px; }
+
+.fundacion-card{
+  margin-top:22px; display:flex; align-items:center; gap:22px; flex-wrap:wrap;
+  background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);
+  border-radius:1.6rem; padding:24px 28px;
+}
+.fundacion-card .fc-txt{ flex:1; min-width:240px; }
+.fundacion-card h3{ color:#fff; font-size:20px; }
+.fundacion-card p{ font-size:14px; color:rgba(234,240,236,.78); margin-top:8px; line-height:1.6; }
+.seal{
+  display:inline-flex; align-items:center; gap:9px; margin-top:14px;
+  font-size:12px; font-weight:600; color:#F2E4BE;
+  background:rgba(176,132,40,.18); border:1px solid rgba(176,132,40,.4);
+  padding:7px 13px; border-radius:999px;
+}
+.seal svg{ width:15px; height:15px; }
+
+/* ============================================================
+   CÓMO AYUDAR — dos monedas
+   ============================================================ */
+.ways{ display:grid; grid-template-columns:minmax(0,680px); justify-content:center; gap:22px; margin-top:56px; }
+.way{
+  background:var(--card); border:1px solid var(--line); border-radius:var(--shell-r);
+  padding:38px 36px; box-shadow:var(--shadow-soft); position:relative; overflow:hidden;
+  display:flex; flex-direction:column;
+}
+.way-tag{ display:inline-flex; align-items:center; gap:9px; align-self:flex-start; font-size:12px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; padding:8px 14px; border-radius:999px; }
+.way-money .way-tag{ color:var(--accent-deep); background:var(--accent-soft); }
+.way h3{ font-size:clamp(26px,3.2vw,32px); margin:20px 0 12px; }
+.way p{ font-size:15px; color:var(--ink-soft); line-height:1.6; }
+.way .divider{ height:1px; background:var(--line); margin:26px 0; }
+
+.need-list{ list-style:none; padding:0; margin:0 0 8px; display:flex; flex-direction:column; gap:12px; }
+.need-list li{ display:flex; gap:13px; align-items:flex-start; font-size:14.5px; color:var(--ink-soft); }
+.need-list .ni{ width:26px; height:26px; flex:none; border-radius:8px; background:var(--accent-soft); color:var(--accent-deep); display:grid; place-items:center; margin-top:1px; }
+.need-list .ni svg{ width:15px; height:15px; }
+.need-list b{ color:var(--ink); font-weight:600; }
+
+.pickup{
+  background:var(--cream); border:1px dashed var(--line-strong); border-radius:1.1rem;
+  padding:16px 18px; font-size:13.5px; color:var(--ink-soft); margin-top:4px;
+}
+.pickup b{ color:var(--ink); }
+.pending{ color:var(--accent-deep); font-weight:600; }
+
+.way .spacer{ flex:1; }
+.way .btn{ margin-top:26px; }
+.fine{ font-size:12px; color:var(--muted); margin-top:14px; text-align:center; }
+
+/* ============================================================
+   DESGRAVACIÓN
+   ============================================================ */
+.desg{ background:var(--cream-2); }
+.desg-grid{ display:grid; grid-template-columns:.85fr 1.15fr; gap:clamp(36px,5vw,72px); align-items:center; }
+@media (max-width:860px){ .desg-grid{ grid-template-columns:1fr; gap:40px; } }
+.desg-tiers{ display:flex; flex-direction:column; gap:12px; }
+.tier{
+  background:var(--card); border:1px solid var(--line); border-radius:1.3rem;
+  padding:20px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px;
+  box-shadow:var(--shadow-soft);
+}
+.tier .give{ font-family:"Fraunces",serif; font-size:26px; font-weight:600; }
+.tier .arrow{ color:var(--muted); font-size:13px; }
+.tier .cost{ text-align:right; }
+.tier .cost .big{ font-family:"Fraunces",serif; font-size:26px; font-weight:600; color:var(--accent); }
+.tier .cost small{ display:block; font-size:12px; color:var(--muted); }
+.desg-note{ font-size:12.5px; color:var(--muted); margin-top:14px; }
+.model182{ display:inline-flex; align-items:center; gap:9px; font-size:13px; font-weight:600; color:var(--ink); background:var(--card); border:1px solid var(--line); padding:9px 15px; border-radius:999px; margin-top:24px; }
+.model182 svg{ width:16px; height:16px; color:var(--accent); }
+
+/* ============================================================
+   ADOPTA TU PARTE
+   ============================================================ */
+.adopta-head{ max-width:60ch; }
+.grid-modules{ display:grid; grid-template-columns:repeat(8,1fr); gap:8px; margin-top:48px; }
+@media (max-width:860px){ .grid-modules{ grid-template-columns:repeat(4,1fr); } }
+.module{
+  aspect-ratio:1/1; border-radius:12px; border:1px solid var(--line);
+  background:var(--card); display:grid; place-items:center; text-align:center; padding:6px;
+  font-size:10.5px; font-weight:600; color:var(--muted); line-height:1.2;
+  transition:transform .5s var(--ease-out), box-shadow .5s var(--ease-out);
+}
+.module.taken{ background:var(--pine); border-color:var(--pine); color:#EAF0EC; }
+.module.taken .grp{ color:#fff; }
+.module.free{ border-style:dashed; }
+.module .grp{ font-weight:700; }
+.module:hover{ transform:translateY(-3px); box-shadow:var(--shadow-soft); }
+.adopta-foot{ display:flex; align-items:center; justify-content:space-between; gap:24px; margin-top:36px; flex-wrap:wrap; }
+.legend{ display:flex; gap:20px; flex-wrap:wrap; font-size:13px; color:var(--muted); }
+.legend span{ display:inline-flex; align-items:center; gap:8px; }
+.legend .sw{ width:14px; height:14px; border-radius:4px; border:1px solid var(--line); }
+.legend .sw.taken{ background:var(--pine); border-color:var(--pine); }
+.legend .sw.free{ border-style:dashed; }
+
+/* ============================================================
+   TRANSPARENCIA
+   ============================================================ */
+.trans-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:52px; }
+@media (max-width:860px){ .trans-grid{ grid-template-columns:1fr; } }
+.trans-card{ background:var(--card); border:1px solid var(--line); border-radius:1.5rem; padding:30px 28px; box-shadow:var(--shadow-soft); }
+.trans-card .ti{ width:44px; height:44px; border-radius:12px; background:var(--accent-soft); color:var(--accent-deep); display:grid; place-items:center; }
+.trans-card .ti svg{ width:22px; height:22px; }
+.trans-card h3{ font-size:21px; margin:18px 0 10px; }
+.trans-card p{ font-size:14.5px; color:var(--ink-soft); line-height:1.6; }
+
+/* ============================================================
+   COMPARTE (CTA final)
+   ============================================================ */
+.comparte{ background:var(--ink); color:var(--cream); text-align:center; }
+.comparte h2{ color:#fff; font-size:clamp(34px,5.5vw,64px); max-width:18ch; margin:22px auto 0; }
+.comparte p{ color:rgba(251,247,240,.72); max-width:52ch; margin:22px auto 0; font-size:17px; }
+.share-row{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:38px; }
+.share-btn{
+  display:inline-flex; align-items:center; gap:11px; cursor:pointer;
+  font-family:inherit; font-size:14.5px; font-weight:600; color:var(--cream);
+  background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.14);
+  padding:13px 22px; border-radius:999px;
+  transition:transform .5s var(--ease-out), background .35s var(--ease-out), border-color .35s var(--ease-out);
+}
+.share-btn:active{ transform:scale(.97); }
+.share-btn:hover{ background:rgba(255,255,255,.14); border-color:rgba(255,255,255,.3); }
+.share-btn svg{ width:18px; height:18px; }
+.share-btn.wa:hover{ background:#25D366; border-color:#25D366; color:#06301a; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer{ background:var(--cream); border-top:1px solid var(--line); padding:64px 0 40px; }
+.foot-top{ display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:40px; }
+@media (max-width:760px){ .foot-top{ grid-template-columns:1fr; gap:32px; } }
+.foot-brand{ display:flex; align-items:center; gap:12px; font-weight:700; letter-spacing:-.02em; font-size:17px; }
+.foot-brand .brand-mark{ width:34px; height:34px; }
+.foot-desc{ font-size:14px; color:var(--muted); margin-top:16px; max-width:38ch; line-height:1.6; }
+.foot-partners{ display:flex; align-items:center; gap:16px; margin-top:22px; flex-wrap:wrap; }
+.partner{ font-size:12.5px; color:var(--ink-soft); }
+.partner b{ color:var(--ink); font-weight:600; }
+.foot-col h4{ font-family:"Plus Jakarta Sans",sans-serif; font-size:12px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin:0 0 16px; }
+.foot-col a, .foot-col p{ display:block; font-size:14px; color:var(--ink-soft); margin-bottom:10px; transition:color .3s var(--ease-out); }
+.foot-col a:hover{ color:var(--accent-deep); }
+.foot-bottom{ display:flex; justify-content:space-between; align-items:center; gap:16px; margin-top:52px; padding-top:24px; border-top:1px solid var(--line); flex-wrap:wrap; }
+.foot-bottom p{ font-size:12.5px; color:var(--muted); }
+.foot-bottom .impulsor-line b{ color:var(--ink); font-weight:600; }
+
+/* ============================================================
+   SCROLL REVEAL
+   ============================================================ */
+.reveal{ opacity:0; transform:translateY(26px); filter:blur(6px); transition:opacity .9s var(--ease-out), transform .9s var(--ease-out), filter .9s var(--ease-out); }
+.reveal.in{ opacity:1; transform:none; filter:none; }
+.reveal.d1{ transition-delay:.08s; }
+.reveal.d2{ transition-delay:.16s; }
+.reveal.d3{ transition-delay:.24s; }
+
+@media (prefers-reduced-motion:reduce){
+  *{ animation:none !important; transition-duration:.01ms !important; scroll-behavior:auto !important; }
+  .reveal{ opacity:1; transform:none; filter:none; }
+}
+
+@media (max-width:820px){
+  .nav-links, .nav-cta{ display:none; }
+  .hamburger{ display:block; }
+}
+
+/* ---------- Ajustes finos móvil ---------- */
+@media (max-width:600px){
+  html, body{ -webkit-tap-highlight-color:transparent; }
+  .wrap{ padding:0 18px; }
+  .section-pad{ padding:72px 0; }
+
+  /* nav: la marca no pelea con la hamburguesa */
+  .nav{ padding:12px 14px; }
+  .nav-pill{ padding:8px 8px 8px 16px; }
+  .brand{ font-size:14px; gap:9px; }
+  .brand-mark{ width:26px; height:26px; }
+  .mobile-menu{ padding:104px 22px 40px; }
+  .mobile-menu a{ font-size:29px; }
+
+  /* hero */
+  .hero{ padding:118px 0 56px; }
+  .hero-lead{ max-width:none; }
+  .hero-cta{ gap:10px; }
+  .hero-cta .btn{ width:100%; justify-content:space-between; }
+
+  /* panel de progreso */
+  .progress-shell{ padding:8px; }
+  .progress-core{ padding:22px 20px; }
+  .pc-figure{ gap:16px; }
+  .container-viz{ width:76px; }
+  .countdown{ gap:6px; }
+  .cd-cell{ padding:11px 4px; border-radius:12px; }
+
+  /* secciones de contenido */
+  .section-title{ max-width:none; }
+  .lead-p{ max-width:none; }
+  .way{ padding:30px 24px; }
+  .steps, .trans-grid{ gap:14px; }
+
+  /* desgravación: tarjetas de tramo sin desbordar */
+  .tier{ padding:18px 18px; gap:10px; }
+  .tier .give{ font-size:21px; }
+  .tier .cost .big{ font-size:21px; }
+  .tier .arrow{ display:none; }
+
+  /* adopta: 3 columnas legibles */
+  .grid-modules{ grid-template-columns:repeat(3,1fr); gap:7px; }
+  .module{ font-size:9.5px; border-radius:10px; overflow:hidden; }
+
+  /* compartir */
+  .share-row{ gap:9px; }
+  .share-btn{ padding:12px 18px; font-size:14px; }
+}
+
+@media (max-width:380px){
+  .brand{ font-size:12.5px; }
+  .pc-raised{ font-size:32px; }
+  .cd-num{ font-size:20px; }
+  .cd-lbl{ font-size:9px; }
+}
+</style>
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+
+<!-- ============ NAV ============ -->
+<nav class="nav" id="nav">
+  <div class="nav-pill">
+    <a href="#top" class="brand" aria-label="Contenedor de Esperanza — inicio">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="3.5" y="12.5" width="33" height="18" rx="2.5" stroke="#C0562C" stroke-width="2"/>
+          <path d="M9 12.5v18M15 12.5v18M21 12.5v18M27 12.5v18M33 12.5v18" stroke="#C0562C" stroke-width="1.3" opacity=".5"/>
+          <path d="M12 8.5c2.6-2.5 5.4-2.5 8 0s5.4 2.5 8 0" stroke="#1E3A32" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </span>
+      Contenedor de Esperanza
+    </a>
+    <div class="nav-links">
+      <a href="#situacion">La situación</a>
+      <a href="#proyecto">El proyecto</a>
+      <a href="#ayudar">Cómo ayudar</a>
+      <a href="#adopta">Adopta tu parte</a>
+    </div>
+    <a href="#ayudar" class="btn btn-primary nav-cta">
+      Quiero ayudar
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </a>
+    <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false">
+      <span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#situacion">La situación</a>
+  <a href="#proyecto">El proyecto</a>
+  <a href="#ayudar">Cómo ayudar</a>
+  <a href="#desgravacion">Desgravación</a>
+  <a href="#adopta">Adopta tu parte</a>
+  <a href="#comparte">Comparte</a>
+</div>
+
+<span id="top"></span>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow reveal"><span class="dot"></span> Emergencia · Venezuela</span>
+        <h1 class="reveal d1">Llenemos un <span class="em">contenedor</span> de esperanza.</h1>
+        <p class="hero-lead reveal d2">Tras los terremotos, enviamos ayuda real a Venezuela: alimentos, medicinas e higiene dentro de un contenedor que sale de Madrid. No donas a una idea. Donas a llenar ese contenedor.</p>
+        <div class="impulsores reveal d2">
+          <span class="lbl">Una iniciativa de la <strong>Fundación Esperanza y Alegría</strong> y <strong>Nicolás San José</strong></span>
+        </div>
+        <div class="hero-cta reveal d3">
+          <a href="#ayudar" class="btn btn-primary">Quiero ayudar
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </a>
+          <a href="#proyecto" class="btn btn-ghost">Cómo funciona
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Panel progreso -->
+      <div class="progress-shell reveal d2">
+        <div class="progress-core">
+          <div class="pc-head">
+            <span class="kicker">Recaudado</span>
+            <span class="pc-live"><span class="dot"></span> Campaña activa</span>
+          </div>
+          <div class="pc-figure">
+            <div class="container-viz" aria-hidden="true">
+              <svg viewBox="0 0 100 132" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <clipPath id="cclip"><rect x="14" y="20" width="72" height="104" rx="4"/></clipPath>
+                </defs>
+                <!-- ganchos superiores -->
+                <rect x="20" y="14" width="8" height="8" rx="1.5" stroke="#221C15" stroke-width="1.6"/>
+                <rect x="72" y="14" width="8" height="8" rx="1.5" stroke="#221C15" stroke-width="1.6"/>
+                <!-- relleno -->
+                <g clip-path="url(#cclip)">
+                  <rect id="fillRect" x="14" y="124" width="72" height="0" fill="#C0562C" opacity=".92"/>
+                </g>
+                <!-- cuerpo -->
+                <rect x="14" y="20" width="72" height="104" rx="4" stroke="#221C15" stroke-width="2"/>
+                <path d="M26 20v104M38 20v104M50 20v104M62 20v104M74 20v104" stroke="#221C15" stroke-width="1" opacity=".28"/>
+                <line x1="14" y1="46" x2="86" y2="46" stroke="#221C15" stroke-width="1" opacity=".2"/>
+                <line x1="14" y1="98" x2="86" y2="98" stroke="#221C15" stroke-width="1" opacity=".2"/>
+              </svg>
+            </div>
+            <div class="pc-numbers">
+              <div class="pc-raised" id="raisedVal">0&nbsp;€</div>
+              <div class="pc-goal">de <b id="goalVal">12.000&nbsp;€</b> · un contenedor completo</div>
+              <div class="bar"><div class="bar-fill" id="barFill"></div></div>
+              <div class="pc-pct"><span><b id="pctVal">0%</b> completado</span><span id="remainVal">faltan 12.000&nbsp;€</span></div>
+            </div>
+          </div>
+
+          <div class="countdown" id="countdown">
+            <div class="cd-cell"><div class="cd-num" id="cdD">–</div><div class="cd-lbl">Días</div></div>
+            <div class="cd-cell"><div class="cd-num" id="cdH">–</div><div class="cd-lbl">Horas</div></div>
+            <div class="cd-cell"><div class="cd-num" id="cdM">–</div><div class="cd-lbl">Min</div></div>
+            <div class="cd-cell"><div class="cd-num" id="cdS">–</div><div class="cd-lbl">Seg</div></div>
+          </div>
+          <p class="pc-note">Cada tramo llega en material real. Medio contenedor también salva vidas.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ TIRA DE CONFIANZA ============ -->
+<div class="trust-strip">
+  <div class="wrap">
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+      <span>ONG <b>acreditada</b> por Fundación Lealtad</span>
+    </div>
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M6 21V10M18 21V10M4 10l8-6 8 6M9 21v-5h6v5"/></svg>
+      <span>Fundación de Madrid desde <b>2001</b></span>
+    </div>
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7l-8 4-8-4 8-4 8 4z"/><path d="M4 7v6l8 4 8-4V7"/></svg>
+      <span>Vía ya rodada de <b>contenedores a Cuba</b></span>
+    </div>
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M5 7l7-5 7 5M5 12h14M5 17h14"/></svg>
+      <span>Donaciones con <b>desgravación fiscal</b></span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SITUACIÓN ============ -->
+<section class="section-pad" id="situacion">
+  <div class="wrap">
+    <div class="split">
+      <div>
+        <span class="kicker reveal">Qué ha pasado</span>
+        <h2 class="section-title reveal d1">La tierra tembló. Familias enteras se quedaron sin nada.</h2>
+        <p class="lead-p reveal d2">En junio de 2026, dos terremotos golpearon Venezuela. El estado de La Guaira fue el más castigado: barrios enteros derrumbados, hospitales al límite y miles de personas durmiendo a la intemperie.</p>
+        <p class="lead-p reveal d2">Hoy falta lo esencial: comida, medicinas y productos de higiene. La ayuda que llega no basta. Por eso preparamos un envío directo, con nombre y apellidos, a través de una fundación que ya sabe cómo hacerlo.</p>
+      </div>
+      <div class="stat-stack">
+        <div class="stat-card reveal d1"><div class="stat-num">+1.700</div><div class="stat-txt"><b>fallecidos confirmados</b>, y decenas de miles de personas aún sin localizar.</div></div>
+        <div class="stat-card reveal d2"><div class="stat-num">58.000</div><div class="stat-txt"><b>edificios dañados o destruidos</b> en la zona del seísmo.</div></div>
+        <div class="stat-card reveal d3"><div class="stat-num">La Guaira</div><div class="stat-txt">el estado <b>más afectado</b>, donde concentramos la ayuda.</div></div>
+      </div>
+    </div>
+    <p class="src-note reveal" style="margin-top:28px;">Cifras a fecha de lanzamiento; se actualizarán conforme avance la emergencia. Fuentes: organismos de emergencia y prensa internacional.</p>
+  </div>
+</section>
+
+<!-- ============ PROYECTO ============ -->
+<section class="section-pad proyecto" id="proyecto">
+  <div class="wrap">
+    <div style="max-width:60ch;">
+      <span class="eyebrow reveal"><span class="dot"></span> Qué vamos a hacer</span>
+      <h2 class="section-title reveal d1">Un contenedor real, lleno de producto real, con un garante real.</h2>
+      <p class="lead-p reveal d2">La Fundación Esperanza y Alegría lleva años enviando contenedores de ayuda a Cuba. Reutilizamos esa misma vía —ya rodada y con todos los permisos— para llevar la ayuda a Venezuela.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step reveal d1">
+        <div class="step-n">Paso 01</div>
+        <h3>Lo llenamos</h3>
+        <p>Con tus aportaciones compramos y recogemos producto no perecedero: alimentos, medicinas e higiene. Todo entra en el contenedor.</p>
+      </div>
+      <div class="step reveal d2">
+        <div class="step-n">Paso 02</div>
+        <h3>Lo enviamos</h3>
+        <p>La fundación gestiona el flete, las tasas y la aduana. El contenedor sale de Madrid rumbo a Venezuela.</p>
+        <div class="figure">~8.000&nbsp;€<small>flete + tasas de un contenedor</small></div>
+      </div>
+      <div class="step reveal d3">
+        <div class="step-n">Paso 03</div>
+        <h3>Llega a quien lo necesita</h3>
+        <p>Sobre el terreno, la ayuda se reparte entre las familias de la zona afectada. Con seguimiento y transparencia.</p>
+      </div>
+    </div>
+
+    <div class="fundacion-card reveal">
+      <div class="fc-txt">
+        <h3>Fundación Esperanza y Alegría</h3>
+        <p>Fundada en Madrid en 2001. Más de 20 años de ayuda humanitaria en 22 países. Es el garante legal y ejecutor de la campaña: emite el certificado de donación y gestiona el envío del contenedor.</p>
+        <span class="seal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+          Sello de Transparencia · Fundación Lealtad
+        </span>
+      </div>
+      <a href="https://fundacionesperanzayalegria.org" target="_blank" rel="noopener" class="btn btn-primary">Ver la fundación
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CÓMO AYUDAR ============ -->
+<section class="section-pad" id="ayudar">
+  <div class="wrap">
+    <div style="max-width:56ch;">
+      <span class="kicker reveal">Cómo ayudar</span>
+      <h2 class="section-title reveal d1">Tu aportación llena el contenedor.</h2>
+      <p class="lead-p reveal d2">Donas a través del canal oficial de la fundación y tu dinero se convierte en producto y flete. Desde cualquier importe, con desgravación en la Renta.</p>
+    </div>
+
+    <div class="ways">
+      <!-- DINERO -->
+      <div class="way way-money reveal d1">
+        <span class="way-tag">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5c0-1.1 1.1-2 2.5-2s2.5.9 2.5 2-1.1 1.5-2.5 1.5-2.5.6-2.5 1.7 1.1 1.8 2.5 1.8 2.5-.7 2.5-1.8"/></svg>
+          Dono dinero
+        </span>
+        <h3>Aportas y desgrava en la Renta.</h3>
+        <p>La forma más directa de ayudar. Donas a través del canal oficial de la fundación, que emite el certificado para tu declaración. Tu dinero se convierte en producto y flete que viajan dentro del contenedor.</p>
+        <div class="divider"></div>
+        <ul class="need-list">
+          <li><span class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span><span><b>Desgravación fiscal</b> garantizada por la fundación.</span></li>
+          <li><span class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span><span>Certificado de donación (<b>Modelo 182</b>) para tu Renta.</span></li>
+          <li><span class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span><span>Desde cualquier importe. Cada euro cuenta.</span></li>
+        </ul>
+        <div class="pickup">Canal oficial de donación: <span class="pending">pendiente de confirmar con la fundación</span> (cuenta / Bizum / plataforma). Se enlazará aquí antes del lanzamiento.</div>
+        <div class="spacer"></div>
+        <a href="https://fundacionesperanzayalegria.org" target="_blank" rel="noopener" class="btn btn-primary btn-block" id="donateBtn">Donar a través de la Fundación
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+        </a>
+        <p class="fine">Pago seguro en el entorno de la fundación. Esta web no gestiona cobros ni pide datos bancarios.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DESGRAVACIÓN ============ -->
+<section class="section-pad desg" id="desgravacion">
+  <div class="wrap">
+    <div class="desg-grid">
+      <div>
+        <span class="kicker reveal">La ventaja que casi nadie explica</span>
+        <h2 class="section-title reveal d1">Donar sale más barato de lo que crees.</h2>
+        <p class="lead-p reveal d2">Al donar a una fundación acreditada, Hacienda te devuelve una parte en la declaración de la Renta. Sobre los primeros 250&nbsp;€, la desgravación es del <b>80%</b>. A partir de ahí, del <b>40%</b> (o 45% si repites donación).</p>
+        <div class="model182 reveal d2">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8l4 4v14H4V3h4z"/><path d="M8 12h8M8 16h5"/></svg>
+          La fundación emite tu certificado (Modelo 182)
+        </div>
+      </div>
+      <div class="desg-tiers">
+        <div class="tier reveal d1">
+          <div><div class="give">Donas 100&nbsp;€</div><small style="color:var(--muted);font-size:12px;">te desgrava el 80%</small></div>
+          <div class="arrow">→</div>
+          <div class="cost"><div class="big">te cuesta 20&nbsp;€</div><small>Hacienda te devuelve 80&nbsp;€</small></div>
+        </div>
+        <div class="tier reveal d2">
+          <div><div class="give">Donas 250&nbsp;€</div><small style="color:var(--muted);font-size:12px;">tramo al 80%</small></div>
+          <div class="arrow">→</div>
+          <div class="cost"><div class="big">te cuesta 50&nbsp;€</div><small>Hacienda te devuelve 200&nbsp;€</small></div>
+        </div>
+        <div class="tier reveal d3">
+          <div><div class="give">Donas 500&nbsp;€</div><small style="color:var(--muted);font-size:12px;">80% + 40%</small></div>
+          <div class="arrow">→</div>
+          <div class="cost"><div class="big">te cuesta 200&nbsp;€</div><small>Hacienda te devuelve 300&nbsp;€</small></div>
+        </div>
+        <p class="desg-note reveal">Ejemplos orientativos para personas físicas (IRPF), según la normativa de mecenazgo vigente. Las empresas también desgravan en el Impuesto de Sociedades. Consulta tu caso con la fundación.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ADOPTA TU PARTE ============ -->
+<section class="section-pad" id="adopta">
+  <div class="wrap">
+    <div class="adopta-head">
+      <span class="kicker reveal">Para grupos e instituciones</span>
+      <h2 class="section-title reveal d1">Adopta tu parte del contenedor.</h2>
+      <p class="lead-p reveal d2">Un colegio mayor, una facultad, una parroquia o una peña pueden reservar una porción del contenedor y llenarla entre todos. Cada módulo lleva vuestro nombre. A ver quién lo llena antes.</p>
+    </div>
+
+    <div class="grid-modules" id="modules" aria-label="Módulos del contenedor"></div>
+
+    <div class="adopta-foot">
+      <div class="legend">
+        <span><span class="sw taken"></span> Adoptado</span>
+        <span><span class="sw free"></span> Disponible</span>
+      </div>
+      <a href="#" class="btn btn-primary" id="adoptBtn">Adoptar un módulo
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TRANSPARENCIA ============ -->
+<section class="section-pad desg" id="transparencia">
+  <div class="wrap">
+    <div style="max-width:56ch;">
+      <span class="kicker reveal">Transparencia</span>
+      <h2 class="section-title reveal d1">Sabes a dónde va cada euro.</h2>
+    </div>
+    <div class="trans-grid">
+      <div class="trans-card reveal d1">
+        <div class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></div>
+        <h3>A dónde va</h3>
+        <p>El 100% de lo recaudado se destina a producto y al flete del contenedor. La fundación asume la gestión con sus recursos habituales.</p>
+      </div>
+      <div class="trans-card reveal d2">
+        <div class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/></svg></div>
+        <h3>Quién ejecuta</h3>
+        <p>La Fundación Esperanza y Alegría, ONG acreditada por Fundación Lealtad, es responsable legal del envío y del reparto en destino.</p>
+      </div>
+      <div class="trans-card reveal d3">
+        <div class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+        <h3>Actualizaciones</h3>
+        <p>Iremos publicando el avance del contador, la salida del contenedor y su llegada, con fotos y seguimiento del reparto.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMPARTE ============ -->
+<section class="section-pad comparte" id="comparte">
+  <div class="wrap">
+    <span class="kicker reveal" style="color:rgba(251,247,240,.6);">Comparte</span>
+    <h2 class="reveal d1">Tú también puedes ser el amanecer de alguien.</h2>
+    <p class="reveal d2">Compartir esta página es gratis y llena el contenedor más rápido que ninguna otra cosa. Un mensaje en tu grupo de WhatsApp puede convertirse en una caja de medicinas.</p>
+    <div class="share-row reveal d2">
+      <button class="share-btn wa" data-share="whatsapp">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.15-1.7-.85-2-.94-.26-.1-.45-.15-.64.15-.19.28-.73.94-.9 1.13-.16.19-.33.21-.62.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.64-2.05-.17-.28-.02-.43.13-.58.13-.13.3-.34.44-.51.15-.17.19-.28.29-.47.1-.19.05-.36-.02-.51-.08-.15-.64-1.55-.88-2.12-.23-.55-.46-.48-.64-.49h-.55c-.19 0-.5.07-.76.36-.26.28-1 .98-1 2.38s1.02 2.76 1.17 2.95c.15.19 2.02 3.08 4.9 4.32.68.29 1.22.47 1.63.6.69.22 1.31.19 1.8.11.55-.08 1.7-.69 1.94-1.36.24-.67.24-1.24.17-1.36-.07-.12-.26-.19-.55-.34z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.5 1.3 5L2 22l5.1-1.3c1.4.8 3.1 1.2 4.9 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3 .8.8-2.9-.2-.3C4 15 3.5 13.5 3.5 12 3.5 7.3 7.3 3.5 12 3.5S20.5 7.3 20.5 12 16.7 20.2 12 20.2z"/></svg>
+        WhatsApp
+      </button>
+      <button class="share-btn" data-share="twitter">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.24 2h3.3l-7.2 8.24L23 22h-6.6l-5.17-6.77L5.3 22H2l7.7-8.8L1.7 2h6.77l4.67 6.17L18.24 2zm-1.16 18h1.83L7.02 3.9H5.06L17.08 20z"/></svg>
+        X
+      </button>
+      <button class="share-btn" data-share="facebook">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 10-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.2c-1.2 0-1.6.75-1.6 1.5V12h2.7l-.43 2.9h-2.3v7A10 10 0 0022 12z"/></svg>
+        Facebook
+      </button>
+      <button class="share-btn" data-share="copy" id="copyBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>
+        <span id="copyLabel">Copiar enlace</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="foot-top">
+      <div>
+        <div class="foot-brand">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3.5" y="12.5" width="33" height="18" rx="2.5" stroke="#C0562C" stroke-width="2"/>
+              <path d="M9 12.5v18M15 12.5v18M21 12.5v18M27 12.5v18M33 12.5v18" stroke="#C0562C" stroke-width="1.3" opacity=".5"/>
+              <path d="M12 8.5c2.6-2.5 5.4-2.5 8 0s5.4 2.5 8 0" stroke="#1E3A32" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </span>
+          Contenedor de Esperanza
+        </div>
+        <p class="foot-desc">Campaña solidaria para enviar un contenedor de ayuda a Venezuela tras los terremotos de 2026.</p>
+        <div class="foot-partners">
+          <span class="partner">Ejecuta y garantiza: <b>Fundación Esperanza y Alegría</b></span>
+          <span class="partner">·</span>
+          <span class="partner">Impulsa: <b>Nicolás San José</b></span>
+        </div>
+      </div>
+      <div class="foot-col">
+        <h4>La campaña</h4>
+        <a href="#situacion">La situación</a>
+        <a href="#proyecto">El proyecto</a>
+        <a href="#ayudar">Cómo ayudar</a>
+        <a href="#desgravacion">Desgravación</a>
+        <a href="#adopta">Adopta tu parte</a>
+      </div>
+      <div class="foot-col">
+        <h4>La fundación</h4>
+        <a href="https://fundacionesperanzayalegria.org" target="_blank" rel="noopener">fundacionesperanzayalegria.org</a>
+        <p>Calle Zurbarán 30, 28010 Madrid</p>
+        <p>Tel. 913 10 69 62</p>
+        <a href="https://fundacionlealtad.org/ong/fundacion-esperanza-y-alegria/" target="_blank" rel="noopener">Ficha en Fundación Lealtad</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p>© 2026 Contenedor de Esperanza. Los fondos se donan a la Fundación Esperanza y Alegría, responsable del envío y la desgravación.</p>
+      <p class="impulsor-line">Una colaboración <b>Fundación Esperanza y Alegría</b> + <b>Nicolás San José</b></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   CONFIG — EDITAR A MANO
+   Actualiza estos valores según reporte la fundación.
+   ============================================================ */
+const CAMPAIGN = {
+  raised:    2340,                     // € recaudados — EDITAR A MANO
+  goal:      12000,                    // € meta (un contenedor completo: ~8.000 € flete + producto)
+  closeDate: '2026-07-20T23:59:59',    // cierre de campaña — EDITAR (15–20 días desde el lanzamiento)
+  contact:   'nicosanjosev@gmail.com', // contacto para "adopta tu parte" (cámbialo por el email de campaña)
+  shareText: 'Estamos llenando un contenedor de ayuda para Venezuela con la Fundación Esperanza y Alegría. Cada aportación llega en producto real. Súmate:'
+};
+
+const euro = new Intl.NumberFormat('es-ES', { style:'currency', currency:'EUR', maximumFractionDigits:0 });
+const $ = (id) => document.getElementById(id);
+
+/* ---------- Progreso ---------- */
+function renderProgress(){
+  const pct = Math.min(100, Math.round((CAMPAIGN.raised / CAMPAIGN.goal) * 100));
+  const remain = Math.max(0, CAMPAIGN.goal - CAMPAIGN.raised);
+  $('raisedVal').innerHTML = euro.format(CAMPAIGN.raised).replace(/\s/g,'&nbsp;');
+  $('goalVal').innerHTML   = euro.format(CAMPAIGN.goal).replace(/\s/g,'&nbsp;');
+  $('pctVal').textContent  = pct + '%';
+  $('remainVal').innerHTML = remain > 0 ? ('faltan ' + euro.format(remain).replace(/\s/g,'&nbsp;')) : '¡Meta alcanzada!';
+  // se animan al entrar en viewport
+  window.__progress = { pct };
+}
+function animateProgress(){
+  const pct = (window.__progress || {}).pct || 0;
+  $('barFill').style.width = pct + '%';
+  const fill = $('fillRect');
+  const fullH = 104, y0 = 20;
+  const h = (fullH * pct) / 100;
+  fill.setAttribute('height', h);
+  fill.setAttribute('y', y0 + (fullH - h));
+}
+
+/* ---------- Cuenta atrás ---------- */
+function tick(){
+  const end = new Date(CAMPAIGN.closeDate).getTime();
+  const now = Date.now();
+  let d = Math.max(0, end - now);
+  const days = Math.floor(d / 86400000); d -= days*86400000;
+  const hrs  = Math.floor(d / 3600000);  d -= hrs*3600000;
+  const mins = Math.floor(d / 60000);    d -= mins*60000;
+  const secs = Math.floor(d / 1000);
+  const p = (n) => String(n).padStart(2,'0');
+  $('cdD').textContent = days;
+  $('cdH').textContent = p(hrs);
+  $('cdM').textContent = p(mins);
+  $('cdS').textContent = p(secs);
+}
+
+/* ---------- Adopta tu parte (módulos) ---------- */
+function renderModules(){
+  // Módulos "adoptados" de ejemplo — sustituir por grupos reales cuando los haya.
+  const taken = {
+    2:'Colegio Mayor Loyola',
+    5:'Parroquia San Miguel',
+    9:'Facultad de Derecho CEU',
+    14:'Peña El Amanecer'
+  };
+  const total = 24;
+  const grid = $('modules');
+  let html = '';
+  for(let i=0;i<total;i++){
+    if(taken[i]){
+      html += '<div class="module taken"><span class="grp">'+taken[i]+'</span></div>';
+    }else{
+      html += '<div class="module free">Libre</div>';
+    }
+  }
+  grid.innerHTML = html;
+}
+
+/* ---------- Formulario vía mailto (funcional sin backend) ---------- */
+function mailtoAdopta(){
+  const subj = encodeURIComponent('Adoptar un módulo — Contenedor de Esperanza');
+  const body = encodeURIComponent(
+    'Hola,\n\nQueremos adoptar una parte del contenedor.\n\n' +
+    '· Grupo / institución:\n· Persona de contacto:\n· Teléfono / email:\n· Tramo que nos gustaría cubrir:\n\n¡Gracias!'
+  );
+  window.location.href = 'mailto:' + CAMPAIGN.contact + '?subject=' + subj + '&body=' + body;
+}
+
+/* ---------- Compartir ---------- */
+function shareVia(kind){
+  const url = window.location.href;
+  const text = CAMPAIGN.shareText;
+  const enc = encodeURIComponent;
+  if(kind === 'whatsapp')      window.open('https://wa.me/?text=' + enc(text + ' ' + url), '_blank');
+  else if(kind === 'twitter')  window.open('https://twitter.com/intent/tweet?text=' + enc(text) + '&url=' + enc(url), '_blank');
+  else if(kind === 'facebook') window.open('https://www.facebook.com/sharer/sharer.php?u=' + enc(url), '_blank');
+  else if(kind === 'copy'){
+    navigator.clipboard.writeText(url).then(() => {
+      const lbl = $('copyLabel');
+      const prev = lbl.textContent;
+      lbl.textContent = '¡Copiado!';
+      setTimeout(() => { lbl.textContent = prev; }, 1800);
+    });
+  }
+}
+
+/* ---------- Scroll reveal ---------- */
+function initReveal(){
+  const els = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        if(e.target.querySelector && e.target.querySelector('#barFill')) {}
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold:.12, rootMargin:'0px 0px -8% 0px' });
+  els.forEach((el) => io.observe(el));
+
+  // anima el contador cuando el panel entra en pantalla
+  const panel = $('barFill');
+  if(panel){
+    const pio = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if(e.isIntersecting){ animateProgress(); pio.disconnect(); } });
+    }, { threshold:.3 });
+    pio.observe(panel.closest('.progress-shell') || panel);
+  }
+}
+
+/* ---------- Nav + menú ---------- */
+function initNav(){
+  const nav = $('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+  }, { passive:true });
+
+  const burger = $('hamburger');
+  const close = () => { document.body.classList.remove('menu-open'); burger.setAttribute('aria-expanded','false'); };
+  burger.addEventListener('click', () => {
+    const open = document.body.classList.toggle('menu-open');
+    burger.setAttribute('aria-expanded', String(open));
+  });
+  document.querySelectorAll('#mobileMenu a').forEach((a) => a.addEventListener('click', close));
+}
+
+/* ---------- Init ---------- */
+document.addEventListener('DOMContentLoaded', () => {
+  renderProgress();
+  renderModules();
+  tick(); setInterval(tick, 1000);
+  initReveal();
+  initNav();
+
+  $('adoptBtn').addEventListener('click', (e) => { e.preventDefault(); mailtoAdopta(); });
+  document.querySelectorAll('[data-share]').forEach((b) => {
+    b.addEventListener('click', () => shareVia(b.getAttribute('data-share')));
+  });
+
+  // fallback: si el panel ya está visible al cargar (desktop), anima igualmente
+  setTimeout(animateProgress, 400);
+});
+</script>
+</body>
+</html>
